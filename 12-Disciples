@@ -119,11 +119,6 @@
   </header>
   <div class="container">
     <h1>Welcome to the Escape Room</h1>
-<<<<<<< HEAD
-    <button onclick="show()">Show answers</button>
-    <div id="output"></div>
-=======
->>>>>>> 20e89d4c7912eec9438e1b9c4b8a61c75d690ac9
     <div id="q1-section" style="display:block;">
       <h2>Question 1</h2>
       <input type="text" id="q1">
@@ -185,24 +180,7 @@
         alert("Wrong answer. Try again!");
       }
     }
-<<<<<<< HEAD
-
-    function show() {
-      let output = "";
-      if (!isLoaded) {
-        alert("Answers are still loading. Please try again in a moment.");
-        return;
-      }
-
-      for (let i = 1; i <= 5; i++) {
-        output += "Answer " + i + ": " + answers["answer" + i] + "    ";
-      }
-      document.getElementById("output").innerHTML = output;
-    }
-
-=======
       
->>>>>>> 20e89d4c7912eec9438e1b9c4b8a61c75d690ac9
     function oncolor(id) {
       document.getElementById(id).style="color:green;";
     }
