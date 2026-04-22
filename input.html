@@ -137,7 +137,19 @@
       localStorage.setItem("answer" + num, value);
       alert("Answer " + num + " saved!");
     }
-
+      
+    function show() {
+      if (!isLoaded) {
+        alert("Answers are still loading. Please try again in a moment.");
+        return;
+      }
+      let DAnswer;
+      for (let i = 1; i <= 5; i++) {
+        DAnswer = localStorage.getItem("answer" + num);
+        document.getElementById("output").innerHTML = DAnswer;
+      }
+    }
+      
     function oncolor(id) {
       document.getElementById(id).style="color:green;";
     }
