@@ -129,7 +129,10 @@
         <button onclick="saveAnswer(5)">Save Answer 5</button>
       </div>
     </div>
+    <div class="row">
     <button onclick="show()">Show answers</button>
+    <button onclick="clear()">Clear answers</button>
+    </div>
     <div id="output"></div>
     <script>
 
@@ -138,7 +141,7 @@
       localStorage.setItem("answer" + num, value);
       alert("Answer " + num + " saved!");
     }
-      
+    
     function show() {
       let DAnswer;
       let output = "";
@@ -148,7 +151,12 @@
       }
       document.getElementById("output").innerHTML = output;
     }
-      
+    
+    function clear() {
+      localStorage.clear();
+      alert("All answers cleared!");
+    }
+
     function oncolor(id) {
       document.getElementById(id).style="color:green;";
     }
