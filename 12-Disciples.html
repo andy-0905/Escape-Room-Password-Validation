@@ -97,6 +97,19 @@
   </style>
 </head>
 <body>
+  <script>
+    let answers = {};
+    let isLoaded = false;
+    document.querySelectorAll("input, button").forEach(el => el.disabled = true);
+    
+    fetch("ans-12-Disciples.json")
+    .then(res => res.json())
+    .then(data => {
+        answers = data;
+        isLoaded = true;
+        document.querySelectorAll("input, button").forEach(el => el.disabled = false);
+    });
+  </script>
   <header>
     <div class="form">
       <button id="home" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Home</button>
@@ -106,7 +119,7 @@
   </header>
   <div class="container">
     <h1>Welcome to the Escape Room</h1>
-
+    <button onclick="show()">Show answers</button>
     <div id="q1-section" style="display:block;">
       <h2>Question 1</h2>
       <input type="text" id="q1">
@@ -144,10 +157,14 @@
     <script>
 
     function checkAnswer(num) {
-      let userAnswer = document.getElementById("q" + num).value;
-      let correctAnswer = localStorage.getItem("answer" + num);
+    if (!isLoaded) {
+        alert("Answers are still loading. Please try again in a moment.");
+        return;
+      }
 
-      if (userAnswer === correctAnswer) {
+      let userAnswer = document.getElementById("q" + num).value;
+      let answer = answers["answer" + num]
+      if (userAnswer.toLowerCase().trim() === answer.toLowerCase().trim()) {
         alert("Correct!");
 
       // unlock next question
@@ -165,6 +182,17 @@
       }
     }
 
+    function show() {
+      if (!isLoaded) {
+        alert("Answers are still loading. Please try again in a moment.");
+        return;
+      }
+
+      for (let i = 1; i <= 5; i++) {
+        console.log(answers["answer" + i]);
+      }
+    }
+
     function oncolor(id) {
       document.getElementById(id).style="color:green;";
     }
@@ -172,7 +200,6 @@
     function offcolour(id) {
       document.getElementById(id).style="color:black;"
     }
-
     </script>
   </div>
 </body>
