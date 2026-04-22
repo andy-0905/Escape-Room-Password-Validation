@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>QR Code Generator</title>
+  <title>Escape Room</title>
   <style>
     body {
       font-family: sans-serif;
@@ -130,6 +130,7 @@
       </div>
     </div>
     <button onclick="show()">Show answers</button>
+    <div id="output"></div>
     <script>
 
     function saveAnswer(num) {
@@ -139,15 +140,13 @@
     }
       
     function show() {
-      if (!isLoaded) {
-        alert("Answers are still loading. Please try again in a moment.");
-        return;
-      }
       let DAnswer;
+      let output = "";
       for (let i = 1; i <= 5; i++) {
-        DAnswer = localStorage.getItem("answer" + num);
-        console.log("answer", num, ": ", DAnswer);
+        DAnswer = localStorage.getItem("answer" + i);
+        output += "Answer " + i + ": " + DAnswer + "<br>";
       }
+      document.getElementById("output").innerHTML = output;
     }
       
     function oncolor(id) {
