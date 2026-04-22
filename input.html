@@ -153,8 +153,11 @@
     }
     
     function clear() {
-      localStorage.clear();
-      alert("All answers cleared!");
+      let EmptyValue = " ";
+      for (let i = 1; i <= 5; i++) {
+        localStorage.setItem("answer" + i, EmptyValue);
+      }
+      alert("All answers reset!");
     }
 
     function oncolor(id) {
