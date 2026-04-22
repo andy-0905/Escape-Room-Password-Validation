@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Escape Room</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      background-color: #c5c5c5;
+      text-align: center;
+      font-size: 20px;
+      color: black;
+    }
+    .text-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  }
+    input, select, button {
+      font-size: 16px;
+      padding: 8px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button id="home" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Home</button>
+    <button id="input" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/input'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">QR Code</button>
+  </header>
+  <h1>This is home!</h1>
+
+  <div id="q1-section" style="display:block;"></div>
+    <h2>Question 1</h2>
+    <input type="text" id="q1">
+    <button onclick="checkAnswer(1)">Submit</button>
+  </div>
+
+  <div id="q2-section" style="display:none;">
+    <h2>Question 2</h2>
+    <input type="text" id="q2">
+    <button onclick="checkAnswer(2)">Submit</button>
+  </div>
+
+  <div id="q3-section" style="display:none;">
+    <h2>Question 3</h2>
+    <input type="text" id="q3">
+    <button onclick="checkAnswer(3)">Submit</button>
+  </div>
+
+  <div id="q4-section" style="display:none;">
+    <h2>Question 4</h2>
+    <input type="text" id="q4">
+    <button onclick="checkAnswer(4)">Submit</button>
+  </div>
+
+  <div id="q5-section" style="display:none;">
+    <h2>Question 5</h2>
+    <input type="text" id="q5">
+    <button onclick="checkAnswer(5)">Submit</button>
+  </div>
+
+  <script>
+
+  function checkAnswer(num) {
+    let userAnswer = document.getElementById("q" + num).value;
+    let correctAnswer = localStorage.getItem("answer" + num);
+
+    if (userAnswer === correctAnswer) {
+      alert("Correct!");
+
+    // unlock next question
+      let curSection = document.getElementById("q" + (num) + "-section");
+      let nextSection = document.getElementById("q" + (num + 1) + "-section");
+      if (nextSection) {
+        curSection.style.display = "none";
+        nextSection.style.display = "block";
+      }
+    } else {
+      alert("Wrong answer. Try again!");
+    }
+  }
+
+  function oncolor(id) {
+    document.getElementById(id).style="color:green;";
+  }
+
+  function offcolour(id) {
+    document.getElementById(id).style="color:black;"
+  }
+
+  </script>
+
+</body>
+</html>

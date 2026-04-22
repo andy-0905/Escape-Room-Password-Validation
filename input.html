@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      background-color: #c5c5c5;
+      text-align: center;
+      font-size: 20px;
+      color: black;
+    }
+    .text-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  }
+    input, select, button {
+      font-size: 16px;
+      padding: 8px;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button id="home" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Home</button>
+    <button id="input" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/input'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">QR Code</button>
+  </header>
+  <h1>Welcome to the Escape Room</h1>
+
+  <input type="text" id="answer1" placeholder="Answer 1" size="40" required>
+  <button onclick="saveAnswer(1)">Save Answer 1</button>
+  <input type="text" id="answer2" placeholder="Answer 2" size="40" required>
+  <button onclick="saveAnswer(2)">Save Answer 2</button>
+  <input type="text" id="answer3" placeholder="Answer 3" size="40" required>
+  <button onclick="saveAnswer(3)">Save Answer 3</button>
+  <input type="text" id="answer4" placeholder="Answer 4" size="40" required>
+  <button onclick="saveAnswer(4)">Save Answer 4</button>
+  <input type="text" id="answer5" placeholder="Answer 5" size="40" required>
+  <button onclick="saveAnswer(5)">Save Answer 5</button>
+
+  <script>
+
+  function saveAnswer(num) {
+    let value = document.getElementById("answer" + num).value;
+    localStorage.setItem("answer" + num, value);
+    alert("Answer " + num + " saved!");
+  }
+
+  function oncolor(id) {
+    document.getElementById(id).style="color:green;";
+  }
+
+  function offcolour(id) {
+    document.getElementById(id).style="color:black;"
+  }
+
+  </script>
+
+</body>
+</html>
