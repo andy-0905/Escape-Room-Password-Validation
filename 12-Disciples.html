@@ -120,6 +120,7 @@
   <div class="container">
     <h1>Welcome to the Escape Room</h1>
     <button onclick="show()">Show answers</button>
+    <div id="output"></div>
     <div id="q1-section" style="display:block;">
       <h2>Question 1</h2>
       <input type="text" id="q1">
@@ -183,14 +184,16 @@
     }
 
     function show() {
+      let output = "";
       if (!isLoaded) {
         alert("Answers are still loading. Please try again in a moment.");
         return;
       }
 
       for (let i = 1; i <= 5; i++) {
-        document.getElementById("output").innerHTML = answers["answer" + i]);
+        output += "Answer " + i + ": " + answers["answer" + i] + "    ";
       }
+      document.getElementById("output").innerHTML = output;
     }
 
     function oncolor(id) {
