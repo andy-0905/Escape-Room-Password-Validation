@@ -15,7 +15,7 @@
 
     .container {
       max-width: 520px;
-      margin: 80px auto 20px auto;
+      margin: auto auto 20px auto;
       padding: 25px;
       background: #2b1d13;
       border: 2px solid #6b4b2a;
@@ -163,6 +163,14 @@
       color: #ff6b6b;
     }
 
+    #timer {
+      padding-top: 50px;
+      padding-bottom: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffcc66;
+      text-shadow: 0 0 8px rgba(255, 204, 102, 0.7);
+    }
   </style>
 </head>
 <body>
@@ -182,6 +190,10 @@
     window.onload = function () {
       defaultmessage();
     };
+
+    document.addEventListener("DOMContentLoaded", function () {
+      startTimer(2400); // 40 minutes (2400 seconds)
+    });
   </script>
   <header>
     <div class="form">
@@ -190,6 +202,7 @@
       <button id="input" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/input'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Input</button>
     </div>
   </header>
+  <div id="timer"></div>
   <div class="container">
     <div id="message"></div>
     <h1>Welcome to the Escape Room</h1>
@@ -285,6 +298,35 @@
       msg.innerText = "Solve all the sections to escape the room!";
       msg.className = "";
     }
+
+    let timerInterval;
+
+    function startTimer(durationInSeconds) {
+      let timeLeft = durationInSeconds;
+      const timer = document.getElementById("timer");
+
+      timerInterval = setInterval(() => {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        // format 00:00
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        timer.innerText = `⏳ Time left: ${minutes}:${seconds}`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          msg.innerText = "💀 Time's up! You are trapped!";
+          msg.className = "error";
+
+          // Optional: disable inputs when time runs out
+          document.querySelectorAll("input, button").forEach(el => el.disabled = true);
+        }
+
+        timeLeft--;
+      }, 1000);
+    }
+
     </script>
   </div>
 </body>
