@@ -5,16 +5,22 @@
   <title>Escape Room</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Trebuchet MS', sans-serif;
       text-align: center;
-      margin-top: 50px;
       margin: 0;
       padding: 20px;
+      background: radial-gradient(circle at top, #3b2a1d, #1e140d);
+      color: #f5e6c8;
     }
 
     .container {
-      max-width: 500px;
-      margin: auto;
+      max-width: 520px;
+      margin: 80px auto 20px auto;
+      padding: 25px;
+      background: #2b1d13;
+      border: 2px solid #6b4b2a;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
     }
 
     header {
@@ -24,33 +30,71 @@
       width: 100%;
       padding: auto;
       padding-top: 5px;
-      background-color: #c5c5c5;
+      background: linear-gradient(to right, #2b1d13, #4a3220);
+      border-bottom: 2px solid #6b4b2a;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
       text-align: center;
       font-size: 16px;
       color: black;
       align-items: center;
       margin-bottom: 10px;
-      
     }
+
     .text-btn {
       background: none;
       border: none;
       padding: 0;
-      color: black;
+      color: #f5e6c8;
       cursor: pointer;
       font-size: 20px;
+      margin: 0 10px;
+      transition: 0.3s;
     }
-    input, select {
+
+    .text-btn:hover {
+      color: #ffd27f;
+      text-shadow: 0 0 8px #ffcc66;
+    }
+
+    h1 {
+      color: #ffcc66;
+      text-shadow: 0 0 10px rgba(255, 204, 102, 0.6);
+    }
+
+    h2 {
+      color: #e0b97a;
+    }
+
+    h3 {
+      color: #c9a46b;
+      font-weight: normal;
+    }
+
+    input {
       font-size: 16px;
       padding: 10px;
-      margin: 5px;
+      margin: 10px 5px;
+      border-radius: 6px;
+      border: 1px solid #8b6a3f;
+      background: #1e140d;
+      color: #f5e6c8;
     }
 
     button {
-      padding: 10px;
+      padding: 10px 15px;
       font-size: 16px;
       cursor: pointer;
       margin: 5px;
+      border-radius: 6px;
+      border: none;
+      background: linear-gradient(to bottom, #8b6a3f, #5a3e24);
+      color: #fff3d6;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(to bottom, #a67c52, #6b4b2a);
+      box-shadow: 0 0 10px rgba(255, 204, 102, 0.5);
     }
 
     .form {
@@ -92,8 +136,32 @@
         cursor: pointer;
         white-space: nowrap;
       }
-
     }
+    .section-box {
+      background: #f5e6c8;
+      color: #2b1d13;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    #message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      background: #1e140d;
+      border: 1px solid #6b4b2a;
+    }
+
+    .success {
+      color: #7CFC00;
+    }
+
+    .error {
+      color: #ff6b6b;
+    }
+
   </style>
 </head>
 <body>
@@ -105,6 +173,7 @@
     </div>
   </header>
   <div class="container">
+    <div id="message"></div>
     <h1>Welcome to the Escape Room</h1>
 
     <div class="form">
@@ -134,12 +203,16 @@
     <button onclick="clear()">Clear answers</button>
     </div>
     <div id="output"></div>
+    
     <script>
-
+    window.onload = function () {
+      defaultmessage();
+    };
+    
     function saveAnswer(num) {
       let value = document.getElementById("answer" + num).value;
       localStorage.setItem("answer" + num, value);
-      alert("Answer " + num + " saved!");
+      showMessage("Answer " + num + " saved!", "success");
     }
     
     function show() {
@@ -157,7 +230,7 @@
       for (let i = 1; i <= 5; i++) {
         localStorage.setItem("answer" + i, EmptyValue);
       }
-      alert("All answers reset!");
+      showMessage("All answers reset!", "error");
     }
 
     function oncolor(id) {
@@ -168,6 +241,17 @@
       document.getElementById(id).style="color:black;"
     }
 
+        function showMessage(text, type) {
+      let msg = document.getElementById("message");
+      msg.innerText = text;
+      msg.className = type;
+    }
+
+    function defaultmessage() {
+      let msg = document.getElementById("message");
+      msg.innerText = "Please set up the answers for the escape room.";
+      msg.className = "";
+    }
     </script>
   </div>
 </body>

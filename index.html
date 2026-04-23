@@ -3,18 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Escape Room</title>
-  <style>
+    <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Trebuchet MS', sans-serif;
       text-align: center;
-      margin-top: 50px;
       margin: 0;
       padding: 20px;
+      background: radial-gradient(circle at top, #3b2a1d, #1e140d);
+      color: #f5e6c8;
     }
 
     .container {
-      max-width: 500px;
-      margin: auto;
+      max-width: 520px;
+      margin: 80px auto 20px auto;
+      padding: 25px;
+      background: #2b1d13;
+      border: 2px solid #6b4b2a;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
     }
 
     header {
@@ -24,33 +30,72 @@
       width: 100%;
       padding: auto;
       padding-top: 5px;
-      background-color: #c5c5c5;
+      background: linear-gradient(to right, #2b1d13, #4a3220);
+      border-bottom: 2px solid #6b4b2a;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
       text-align: center;
       font-size: 16px;
       color: black;
       align-items: center;
       margin-bottom: 10px;
-      
     }
+
     .text-btn {
       background: none;
       border: none;
       padding: 0;
-      color: black;
+      color: #f5e6c8;
       cursor: pointer;
       font-size: 20px;
+      margin: 0 10px;
+      transition: 0.3s;
     }
-    input, select {
+
+    .text-btn:hover {
+      color: #ffd27f;
+      text-shadow: 0 0 8px #ffcc66;
+    }
+
+    h1 {
+      color: #ffcc66;
+      text-shadow: 0 0 10px rgba(255, 204, 102, 0.6);
+    }
+
+    h2 {
+      color: #e0b97a;
+    }
+
+    h3 {
+      color: #c9a46b;
+      font-weight: normal;
+    }
+
+    input {
       font-size: 16px;
       padding: 10px;
-      margin: 5px;
+      margin: 10px 5px;
+      width: 70%;
+      border-radius: 6px;
+      border: 1px solid #8b6a3f;
+      background: #1e140d;
+      color: #f5e6c8;
     }
 
     button {
-      padding: 10px;
+      padding: 10px 15px;
       font-size: 16px;
       cursor: pointer;
       margin: 5px;
+      border-radius: 6px;
+      border: none;
+      background: linear-gradient(to bottom, #8b6a3f, #5a3e24);
+      color: #fff3d6;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(to bottom, #a67c52, #6b4b2a);
+      box-shadow: 0 0 10px rgba(255, 204, 102, 0.5);
     }
 
     .form {
@@ -92,7 +137,30 @@
         cursor: pointer;
         white-space: nowrap;
       }
+    }
+    .section-box {
+      background: #f5e6c8;
+      color: #2b1d13;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+    }
 
+    #message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      background: #1e140d;
+      border: 1px solid #6b4b2a;
+    }
+
+    .success {
+      color: #7CFC00;
+    }
+
+    .error {
+      color: #ff6b6b;
     }
   </style>
 </head>
@@ -105,50 +173,54 @@
     </div>
   </header>
   <div class="container">
+    <div id="message"></div>
     <h1>Welcome to the Escape Room</h1>
 
-    <div id="q1-section" style="display:block;">
+    <div id="q1-section" class="section-box" style="display:block;">
       <h2>Question 1</h2>
       <input type="text" id="q1">
       <button onclick="checkAnswer(1)">Submit</button>
     </div>
 
-    <div id="q2-section" style="display:none;">
+    <div id="q2-section" class="section-box" style="display:none;">
       <h2>Question 2</h2>
       <input type="text" id="q2">
       <button onclick="checkAnswer(2)">Submit</button>
     </div>
 
-    <div id="q3-section" style="display:none;">
+    <div id="q3-section" class="section-box" style="display:none;">
       <h2>Question 3</h2>
       <input type="text" id="q3">
       <button onclick="checkAnswer(3)">Submit</button>
     </div>
 
-    <div id="q4-section" style="display:none;">
+    <div id="q4-section" class="section-box" style="display:none;">
       <h2>Question 4</h2>
       <input type="text" id="q4">
       <button onclick="checkAnswer(4)">Submit</button>
     </div>
 
-    <div id="q5-section" style="display:none;">
+    <div id="q5-section" class="section-box" style="display:none;">
       <h2>Question 5</h2>
       <input type="text" id="q5">
       <button onclick="checkAnswer(5)">Submit</button>
     </div>
 
-    <div id="end-section" style="display:none;">
+    <div id="end-section" class="section-box" style="display:none;">
       <h2>You Have Escaped!</h2>
     </div>
 
     <script>
+    window.onload = function () {
+      defaultmessage();
+    };
 
     function checkAnswer(num) {
       let userAnswer = document.getElementById("q" + num).value;
       let correctAnswer = localStorage.getItem("answer" + num);
 
       if (userAnswer === correctAnswer) {
-        alert("Correct!");
+        showMessage("Correct!", "success");
 
       // unlock next question
         let curSection = document.getElementById("q" + (num) + "-section");
@@ -161,7 +233,7 @@
           endSection.style.display = "block";
         }
       } else {
-        alert("Wrong answer. Try again!");
+        showMessage("Wrong answer. Try again!", "error");
       }
     }
 
@@ -173,6 +245,17 @@
       document.getElementById(id).style="color:black;"
     }
 
+    function showMessage(text, type) {
+      let msg = document.getElementById("message");
+      msg.innerText = text;
+      msg.className = type;
+    }
+
+    function defaultmessage() {
+      let msg = document.getElementById("message");
+      msg.innerText = "Solve all the sections to escape the room!";
+      msg.className = "";
+    }
     </script>
   </div>
 </body>
