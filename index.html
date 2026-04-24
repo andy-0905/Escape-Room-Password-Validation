@@ -213,6 +213,9 @@ body {
       <button id="input" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/input'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Input</button>
     </div>
   </header>
+  <audio id="bg-music" loop>
+    <source src="bgm.mp3" type="audio/mpeg">
+  </audio>
   <div id="timer-container">
     <div id="timer"></div>
     <div id="penalty"></div>
@@ -264,6 +267,7 @@ body {
     window.onload = function () {
       defaultmessage();
       loadQuestions();
+      startMusic();
     };
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -276,13 +280,6 @@ body {
       if (correctAnswer === null) {
         showMessage("No answer saved for this question. Please input your answers first.", "error");
         return;
-      }
-      for (let i = 1; i <= 5; i++) {
-          let Check = localStorage.getItem("answer" + i) || "(empty)";
-          if (Check === "(empty)") {
-            showMessage("Please save all answers before the game.", "error");
-            return;
-          }
       }
 
       // 🚫 disable button immediately
@@ -300,7 +297,8 @@ body {
         let curSection = document.getElementById("q" + (num) + "-section");
         curSection.style.display = "none";
         let nextSection = document.getElementById("q" + (num + 1) + "-section");
-        if (nextSection) {
+        let nextAnswer = localStorage.getItem("answer" + (num + 1)) || null;
+        if (nextSection && nextAnswer) {
           nextSection.style.display = "block";
         } else {
           let endSection = document.getElementById("end-section");
@@ -394,6 +392,20 @@ body {
         }
       }
     }
+
+    let musicStarted = false;
+
+  function startMusic() {
+    if (musicStarted) return;
+
+    const music = document.getElementById("bg-music");
+
+    music.volume = 0.4;
+
+    const playPromise = music.play().then(() => {});
+  }
+    
+    document.addEventListener("click", startMusic);
     </script>
   </div>
 </body>
