@@ -176,7 +176,42 @@
     <div id="message"></div>
     <h1>Welcome to the Escape Room</h1>
 
-    <div class="form">
+    <div class="row">
+    <button onclick="showForm('q')">Set questions</button>
+    <button onclick="showForm('a')">Set answers</button>
+    </div>
+
+    <div class="form" id="FormQuestions" style="display:block;">
+      <p>Set Questions</p>
+      <div class="row">
+        <input type="text" id="Question1" placeholder="Question 1" size="40" required>
+        <button onclick="saveQuestion(1)">Save Question 1</button>
+      </div>
+      <div class="row">
+        <input type="text" id="Question2" placeholder="Question 2" size="40" required>
+        <button onclick="saveQuestion(2)">Save Question 2</button>
+      </div>
+      <div class="row">
+        <input type="text" id="Question3" placeholder="Question 3" size="40" required>
+        <button onclick="saveQuestion(3)">Save Question 3</button>
+      </div>
+      <div class="row">
+        <input type="text" id="Question4" placeholder="Question 4" size="40" required>
+        <button onclick="saveQuestion(4)">Save Question 4</button>
+      </div>
+      <div class="row">
+        <input type="text" id="Question5" placeholder="Question 5" size="40" required>
+        <button onclick="saveQuestion(5)">Save Question 5</button>
+      </div>
+      
+      <div class="row">
+        <button id="toggleBtn" onclick="showQuestions(isShowing)">Show answers</button>
+        <button onclick="clearQuestions()">Clear answers</button>
+      </div>
+    </div>
+
+     <div class="form" id="FormAnswers" style="display:none;">
+      <p>Set Answers</p>
       <div class="row">
         <input type="text" id="answer1" placeholder="Answer 1" size="40" required>
         <button onclick="saveAnswer(1)">Save Answer 1</button>
@@ -197,13 +232,15 @@
         <input type="text" id="answer5" placeholder="Answer 5" size="40" required>
         <button onclick="saveAnswer(5)">Save Answer 5</button>
       </div>
+
+      <div class="row">
+        <button id="toggleBtn" onclick="showAns(isShowing)">Show answers</button>
+        <button onclick="clearAns()">Clear answers</button>
+      </div>
     </div>
-    <div class="row">
-    <button id="toggleBtn" onclick="showAns(isShowing)">Show answers</button>
-    <button onclick="clearAns()">Clear answers</button>
-    </div>
+
     <div id="output"></div>
-    
+    </div>
     <script>
     window.onload = function () {
       defaultmessage();
@@ -245,7 +282,6 @@
       for (let i = 1; i <= 5; i++) {
         localStorage.removeItem("answer" + i);
       }
-      localStorage.clear();
       showMessage("All answers reset!", "error");
       showAns(true);
     }
@@ -269,7 +305,57 @@
       msg.innerText = "Please set up the answers for the escape room.";
       msg.className = "";
     }
+
+    function saveQuestion(num) {
+      let value = document.getElementById("Question" + num).value;
+      localStorage.setItem("Question" + num, value);
+      showMessage("Question " + num + " saved!", "success");
+      showAns(true);
+    }
+
+    function showForm(type) {
+      let qForm = document.getElementById("FormQuestions");
+      let aForm = document.getElementById("FormAnswers");
+      if (type === 'q') {
+        qForm.style.display = "block";
+        aForm.style.display = "none";
+      } else if (type === 'a') {
+        qForm.style.display = "none";
+        aForm.style.display = "block";
+      }
+      showAns(true);
+    }
+
+    function clearQuestions() {
+      for (let i = 1; i <= 5; i++) {
+        localStorage.removeItem("Question" + i);
+      }
+      showMessage("All questions reset!", "error");
+      showAns(true);
+    }
+
+    function showQuestions(bool) {
+      let outputDiv = document.getElementById("output");
+      let btn = document.getElementById("toggleBtn");
+      if (bool != isShowing) {
+        isShowing = bool;
+      }
+
+      if (isShowing) {
+        outputDiv.innerHTML = "";
+        btn.innerText = "Show questions";
+        isShowing = false;
+      } else {
+        let output = "";
+        for (let i = 1; i <= 5; i++) {
+          let DQuestion = localStorage.getItem("Question" + i) || "(empty)";
+          output += "Question " + i + ": " + DQuestion + "<br>";
+        }
+        outputDiv.innerHTML = output;
+        btn.innerText = "Hide questions";
+        isShowing = true;
+      }
+    }
     </script>
-  </div>
 </body>
 </html>

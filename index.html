@@ -223,30 +223,35 @@ body {
 
     <div id="q1-section" class="section-box" style="display:block;">
       <h2>Question 1</h2>
+      <p id="q1-text"></p>
       <input type="text" id="q1">
       <button onclick="checkAnswer(1, this)">Submit</button>
     </div>
 
     <div id="q2-section" class="section-box" style="display:none;">
       <h2>Question 2</h2>
+      <p id="q2-text"></p>
       <input type="text" id="q2">
       <button onclick="checkAnswer(2, this)">Submit</button>
     </div>
 
     <div id="q3-section" class="section-box" style="display:none;">
       <h2>Question 3</h2>
+      <p id="q3-text"></p>
       <input type="text" id="q3">
       <button onclick="checkAnswer(3, this)">Submit</button>
     </div>
 
     <div id="q4-section" class="section-box" style="display:none;">
       <h2>Question 4</h2>
+      <p id="q4-text"></p>
       <input type="text" id="q4">
       <button onclick="checkAnswer(4, this)">Submit</button>
     </div>
 
     <div id="q5-section" class="section-box" style="display:none;">
       <h2>Question 5</h2>
+      <p id="q5-text"></p>
       <input type="text" id="q5">
       <button onclick="checkAnswer(5, this)">Submit</button>
     </div>
@@ -258,6 +263,7 @@ body {
     <script>
     window.onload = function () {
       defaultmessage();
+      loadQuestions();
     };
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -376,6 +382,17 @@ body {
       penaltyEl.classList.remove("penalty-show");
       void penaltyEl.offsetWidth; // force reflow
       penaltyEl.classList.add("penalty-show");
+    }
+
+    function loadQuestions() {
+      for (let i = 1; i <= 5; i++) {
+        let q = localStorage.getItem("Question" + i);
+        let el = document.getElementById("q" + i + "-text");
+
+        if (el) {
+          el.innerText = q ? q : "";
+        }
+      }
     }
     </script>
   </div>
