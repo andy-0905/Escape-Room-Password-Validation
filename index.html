@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Escape Room</title>
     <style>
-    body {
+body {
       font-family: 'Trebuchet MS', sans-serif;
       text-align: center;
       margin: 0;
@@ -15,7 +15,7 @@
 
     .container {
       max-width: 520px;
-      margin: 80px auto 20px auto;
+      margin: auto auto 20px auto;
       padding: 25px;
       background: #2b1d13;
       border: 2px solid #6b4b2a;
@@ -162,6 +162,47 @@
     .error {
       color: #ff6b6b;
     }
+
+    #timer {
+      padding-top: 50px;
+      padding-bottom: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffcc66;
+      text-shadow: 0 0 8px rgba(255, 204, 102, 0.7);
+    }
+
+    #timer-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    #penalty {
+      position: absolute;
+      right: -70px;
+      top: 50px;
+      color: #ff4d4d;
+      font-weight: bold;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* animation */
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+    }
+
+    .penalty-show {
+      animation: floatUp 1s ease-out;
+    }
+
   </style>
 </head>
 <body>
@@ -172,6 +213,10 @@
       <button id="input" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/input'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Input</button>
     </div>
   </header>
+  <div id="timer-container">
+    <div id="timer"></div>
+    <div id="penalty"></div>
+  </div>
   <div class="container">
     <div id="message"></div>
     <h1>Welcome to the Escape Room</h1>
@@ -179,31 +224,31 @@
     <div id="q1-section" class="section-box" style="display:block;">
       <h2>Question 1</h2>
       <input type="text" id="q1">
-      <button onclick="checkAnswer(1)">Submit</button>
+      <button onclick="checkAnswer(1, this)">Submit</button>
     </div>
 
     <div id="q2-section" class="section-box" style="display:none;">
       <h2>Question 2</h2>
       <input type="text" id="q2">
-      <button onclick="checkAnswer(2)">Submit</button>
+      <button onclick="checkAnswer(2, this)">Submit</button>
     </div>
 
     <div id="q3-section" class="section-box" style="display:none;">
       <h2>Question 3</h2>
       <input type="text" id="q3">
-      <button onclick="checkAnswer(3)">Submit</button>
+      <button onclick="checkAnswer(3, this)">Submit</button>
     </div>
 
     <div id="q4-section" class="section-box" style="display:none;">
       <h2>Question 4</h2>
       <input type="text" id="q4">
-      <button onclick="checkAnswer(4)">Submit</button>
+      <button onclick="checkAnswer(4, this)">Submit</button>
     </div>
 
     <div id="q5-section" class="section-box" style="display:none;">
       <h2>Question 5</h2>
       <input type="text" id="q5">
-      <button onclick="checkAnswer(5)">Submit</button>
+      <button onclick="checkAnswer(5, this)">Submit</button>
     </div>
 
     <div id="end-section" class="section-box" style="display:none;">
@@ -215,9 +260,32 @@
       defaultmessage();
     };
 
-    function checkAnswer(num) {
+    document.addEventListener("DOMContentLoaded", function () {
+      startTimer(2400); // 40 minutes (2400 seconds)
+    });
+
+    function checkAnswer(num, btn) {
       let userAnswer = document.getElementById("q" + num).value;
-      let correctAnswer = localStorage.getItem("answer" + num);
+      let correctAnswer = localStorage.getItem("answer" + num) || null;
+      if (correctAnswer === null) {
+        showMessage("No answer saved for this question. Please input your answers first.", "error");
+        return;
+      }
+      for (let i = 1; i <= 5; i++) {
+          let Check = localStorage.getItem("answer" + i) || "(empty)";
+          if (Check === "(empty)") {
+            showMessage("Please save all answers before the game.", "error");
+            return;
+          }
+      }
+
+      // 🚫 disable button immediately
+      btn.disabled = true;
+
+      // ⏱ re-enable after 3 seconds
+      setTimeout(() => {
+        btn.disabled = false;
+      }, 3000);
 
       if (userAnswer === correctAnswer) {
         showMessage("Correct!", "success");
@@ -234,6 +302,12 @@
         }
       } else {
         showMessage("Wrong answer. Try again!", "error");
+        timeLeft -= 120;
+
+        if (timeLeft < 0) {
+          timeLeft = 0;
+        }
+        showPenalty(120);
       }
     }
 
@@ -255,6 +329,51 @@
       let msg = document.getElementById("message");
       msg.innerText = "Solve all the sections to escape the room!";
       msg.className = "";
+    }
+
+  let timerInterval;
+  let timeLeft = 0;
+
+    function startTimer(durationInSeconds) {
+      timeLeft = durationInSeconds;
+      const timer = document.getElementById("timer");
+
+      timerInterval = setInterval(() => {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        // format 00:00
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        timer.innerText = `⏳ Time left: ${minutes}:${seconds}`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          msg.innerText = "💀 Time's up! You are trapped!";
+          msg.className = "error";
+
+          // Optional: disable inputs when time runs out
+          document.querySelectorAll("input, button").forEach(el => el.disabled = true);
+        }
+
+        timeLeft--;
+      }, 1000);
+    }
+
+    function showPenalty(seconds) {
+      const penaltyEl = document.getElementById("penalty");
+
+      let mins = Math.floor(seconds / 60);
+      let secs = seconds % 60;
+
+      secs = secs < 10 ? "0" + secs : secs;
+
+      penaltyEl.innerText = `-${mins}:${secs}`;
+
+      // restart animation
+      penaltyEl.classList.remove("penalty-show");
+      void penaltyEl.offsetWidth; // force reflow
+      penaltyEl.classList.add("penalty-show");
     }
     </script>
   </div>

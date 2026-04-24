@@ -199,8 +199,8 @@
       </div>
     </div>
     <div class="row">
-    <button onclick="show()">Show answers</button>
-    <button onclick="clear()">Clear answers</button>
+    <button id="toggleBtn" onclick="showAns()">Show answers</button>
+    <button onclick="clearAns()">Clear answers</button>
     </div>
     <div id="output"></div>
     
@@ -208,6 +208,8 @@
     window.onload = function () {
       defaultmessage();
     };
+
+    let isShowing = false;
     
     function saveAnswer(num) {
       let value = document.getElementById("answer" + num).value;
@@ -215,21 +217,31 @@
       showMessage("Answer " + num + " saved!", "success");
     }
     
-    function show() {
-      let DAnswer;
-      let output = "";
-      for (let i = 1; i <= 5; i++) {
-        DAnswer = localStorage.getItem("answer" + i);
-        output += "Answer " + i + ": " + DAnswer + "<br>";
+    function showAns() {
+      let outputDiv = document.getElementById("output");
+      let btn = document.getElementById("toggleBtn");
+
+      if (isShowing) {
+        outputDiv.innerHTML = "";
+        btn.innerText = "Show answers";
+        isShowing = false;
+      } else {
+        let output = "";
+        for (let i = 1; i <= 5; i++) {
+          let DAnswer = localStorage.getItem("answer" + i) || "(empty)";
+          output += "Answer " + i + ": " + DAnswer + "<br>";
+        }
+        outputDiv.innerHTML = output;
+        btn.innerText = "Hide answers";
+        isShowing = true;
       }
-      document.getElementById("output").innerHTML = output;
     }
     
-    function clear() {
-      let EmptyValue = " ";
+    function clearAns() {
       for (let i = 1; i <= 5; i++) {
-        localStorage.setItem("answer" + i, EmptyValue);
+        localStorage.removeItem("answer" + i);
       }
+      localStorage.clear();
       showMessage("All answers reset!", "error");
     }
 

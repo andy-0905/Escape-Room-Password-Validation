@@ -171,6 +171,21 @@
       color: #ffcc66;
       text-shadow: 0 0 8px rgba(255, 204, 102, 0.7);
     }
+
+    #timer-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    #penalty {
+      position: absolute;
+      right: -70px;
+      top: 50px;
+      color: #ff4d4d;
+      font-weight: bold;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -202,7 +217,10 @@
       <button id="input" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/input'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Input</button>
     </div>
   </header>
-  <div id="timer"></div>
+  <div id="timer-container">
+    <div id="timer"></div>
+    <div id="penalty"></div>
+  </div>
   <div class="container">
     <div id="message"></div>
     <h1>Welcome to the Escape Room</h1>
@@ -210,7 +228,7 @@
       <h2>Section 1</h2>
       <h3>God is our light of life</h3>
       <input type="text" id="q1">
-      <button onclick="checkAnswer(1)">Submit</button>
+      <button onclick="checkAnswer(1, this)">Submit</button>
     </div>
 
     <div id="q2-section" class="section-box" style="display:none;">
@@ -218,7 +236,7 @@
       <h3>Who are we?</h3>
       <h3>Hint: Find the red box</h3>
       <input type="text" id="q2">
-      <button onclick="checkAnswer(2)">Submit</button>
+      <button onclick="checkAnswer(2, this)">Submit</button>
     </div>
 
     <div id="q3-section" class="section-box" style="display:none;">
@@ -226,7 +244,7 @@
         <h3>Animals in the Bible</h3>
         <h3>Hint: Find the passage</h3>
         <input type="text" id="q3">
-        <button onclick="checkAnswer(3)">Submit</button>
+        <button onclick="checkAnswer(3, this)">Submit</button>
     </div>
 
     <div id="q4-section" class="section-box" style="display:none;">
@@ -234,7 +252,7 @@
       <h3>The Power of Together</h3>
       <h3>Hint: Find the passage</h3>
       <input type="text" id="q4">
-      <button onclick="checkAnswer(4)">Submit</button>
+      <button onclick="checkAnswer(4, this)">Submit</button>
     </div>
 
     <div id="q5-section" class="section-box" style="display:none;">
@@ -242,7 +260,7 @@
       <h3>Jesus washes the disciples' feet</h3>
       <h3>Hint: Find the basin</h3>
       <input type="text" id="q5">
-      <button onclick="checkAnswer(5)">Submit</button>
+      <button onclick="checkAnswer(5, this)">Submit</button>
     </div>
 
     <div id="end-section" class="section-box" style="display:none;">
@@ -253,11 +271,19 @@
 
     <script>
 
-    function checkAnswer(num) {
+    function checkAnswer(num, btn) {
     if (!isLoaded) {
         showMessage("Answers are still loading. Please try again in a moment.", "error");
         return;
       }
+
+      // 🚫 disable button immediately
+      btn.disabled = true;
+
+      // ⏱ re-enable after 3 seconds
+      setTimeout(() => {
+        btn.disabled = false;
+      }, 3000);
 
       let userAnswer = document.getElementById("q" + num).value;
       let answer = answers["answer" + num]
@@ -276,9 +302,31 @@
         }
       } else {
         showMessage("Wrong answer. Try again!", "error");
+        timeLeft -= 120;
+
+        if (timeLeft < 0) {
+          timeLeft = 0;
+        }
+        showPenalty(120);
       }
     }
-      
+
+    function showPenalty(seconds) {
+      const penaltyEl = document.getElementById("penalty");
+
+      let mins = Math.floor(seconds / 60);
+      let secs = seconds % 60;
+
+      secs = secs < 10 ? "0" + secs : secs;
+
+      penaltyEl.innerText = `-${mins}:${secs}`;
+
+      // restart animation
+      penaltyEl.classList.remove("penalty-show");
+      void penaltyEl.offsetWidth; // force reflow
+      penaltyEl.classList.add("penalty-show");
+    }
+
     function oncolor(id) {
       document.getElementById(id).style="color:green;";
     }
@@ -300,9 +348,10 @@
     }
 
     let timerInterval;
+    let timeLeft = 0;
 
     function startTimer(durationInSeconds) {
-      let timeLeft = durationInSeconds;
+      timeLeft = durationInSeconds;
       const timer = document.getElementById("timer");
 
       timerInterval = setInterval(() => {
@@ -318,8 +367,6 @@
           clearInterval(timerInterval);
           msg.innerText = "💀 Time's up! You are trapped!";
           msg.className = "error";
-
-          // Optional: disable inputs when time runs out
           document.querySelectorAll("input, button").forEach(el => el.disabled = true);
         }
 
