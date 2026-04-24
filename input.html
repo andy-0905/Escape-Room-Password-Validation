@@ -199,7 +199,7 @@
       </div>
     </div>
     <div class="row">
-    <button id="toggleBtn" onclick="showAns()">Show answers</button>
+    <button id="toggleBtn" onclick="showAns(isShowing)">Show answers</button>
     <button onclick="clearAns()">Clear answers</button>
     </div>
     <div id="output"></div>
@@ -215,11 +215,15 @@
       let value = document.getElementById("answer" + num).value;
       localStorage.setItem("answer" + num, value);
       showMessage("Answer " + num + " saved!", "success");
+      showAns(true);
     }
     
-    function showAns() {
+    function showAns(bool) {
       let outputDiv = document.getElementById("output");
       let btn = document.getElementById("toggleBtn");
+      if (bool != isShowing) {
+        isShowing = bool;
+      }
 
       if (isShowing) {
         outputDiv.innerHTML = "";
@@ -243,6 +247,7 @@
       }
       localStorage.clear();
       showMessage("All answers reset!", "error");
+      showAns(true);
     }
 
     function oncolor(id) {
