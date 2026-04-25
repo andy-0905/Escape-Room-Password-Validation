@@ -216,6 +216,9 @@ body {
   <audio id="bg-music" loop>
     <source src="bgm.mp3" type="audio/mpeg">
   </audio>
+  <audio id="ticking-sound">
+    <source src="ticking.mp3" type="audio/mpeg">
+  </audio>
   <div id="timer-container">
     <div id="timer"></div>
     <div id="penalty"></div>
@@ -267,12 +270,7 @@ body {
     window.onload = function () {
       defaultmessage();
       loadQuestions();
-      startMusic();
     };
-
-    document.addEventListener("DOMContentLoaded", function () {
-      startTimer(2400); // 40 minutes (2400 seconds)
-    });
 
     function checkAnswer(num, btn) {
       let userAnswer = document.getElementById("q" + num).value;
@@ -395,17 +393,39 @@ body {
 
     let musicStarted = false;
 
-  function startMusic() {
-    if (musicStarted) return;
+    function startMusic() {
+      if (musicStarted) return;
 
-    const music = document.getElementById("bg-music");
+      const music = document.getElementById("bg-music");
 
-    music.volume = 0.4;
+      music.volume = 0.4;
 
-    const playPromise = music.play().then(() => {});
-  }
+      const playPromise = music.play().then(() => {});
+    }
     
-    document.addEventListener("click", startMusic);
+    document.addEventListener("click", function initAudio() {
+      startMusic();
+      startTimer(2400); // 40 minutes (2400 seconds)
+      startIntervalAudio();
+
+      document.removeEventListener("click", initAudio);
+    });
+
+    function startIntervalAudio() {
+      playIntervalSound();
+
+      setInterval(() => {
+        playIntervalSound();
+      }, 180000);
+    }
+
+    function playIntervalSound() {
+      const sound = document.getElementById("ticking-sound");
+      sound.volume = 0.5;
+      sound.play()
+        .then(() => console.log("sound played"))
+        .catch(err => console.log("play failed:", err));
+      }    
     </script>
   </div>
 </body>
