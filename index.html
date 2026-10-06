@@ -206,6 +206,11 @@ body {
   </style>
 </head>
 <body>
+  <script>
+      document.querySelectorAll('input').forEach(input => {
+      input.setAttribute('autocomplete', 'off');
+    });
+  </script>
   <header>
     <div class="form">
       <button id="home" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Home</button>

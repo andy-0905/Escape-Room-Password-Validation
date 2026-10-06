@@ -232,6 +232,10 @@
       defaultmessage();
     };
 
+    document.querySelectorAll('input').forEach(input => {
+      input.setAttribute('autocomplete', 'off');
+    });
+
   </script>
   <header>
     <div class="form">
