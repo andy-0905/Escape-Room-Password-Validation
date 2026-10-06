@@ -18,7 +18,7 @@
       margin: auto auto 20px auto;
       padding: 25px;
       background: #FFF1D2;
-      border: 2px solid #222222;
+      border: none;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,0,0,0.7);
     }
@@ -30,9 +30,9 @@
       width: 100%;
       padding: auto;
       padding-top: 5px;
-      background: linear-gradient(to right, #CFE4F2, #DCECF7);
-      border-bottom: 2px solid #A9D4EA;
-      box-shadow: 0 2px 10px rgba(34, 34, 34, 0.2);
+      background: #f5e6c8;
+      border-bottom: 2px solid #6b4b2a;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
       text-align: center;
       font-size: 16px;
       color: #111111;
@@ -44,8 +44,8 @@
     }
 
     .text-btn {
-      background: #A9D4EA;
-      border: 2px solid #222222;
+      background: none;
+      border: none;
       padding: 0;
       color: #111111;
       cursor: pointer;
@@ -65,7 +65,12 @@
     }
 
     h2 {
-      color: #6FA8C5;
+      color: #5A9FC2;
+      margin-top: 1px;
+    }
+
+    h4 {
+      color: #111111;
       margin-top: 1px;
     }
 
@@ -91,7 +96,7 @@
       cursor: pointer;
       margin: 5px;
       border-radius: 6px;
-      border: 2px solid #222222;
+      border: none;
       background: linear-gradient(to bottom, #A9D4EA, #8FC5E0);
       color: #111111;
       transition: 0.3s;
@@ -215,7 +220,7 @@
     let isLoaded = false;
     document.querySelectorAll("input, button").forEach(el => el.disabled = true);
     
-    fetch("ans-12-Disciples.json")
+    fetch("ans-Passcode.json")
     .then(res => res.json())
     .then(data => {
         answers = data;
@@ -231,69 +236,27 @@
   <header>
     <div class="form">
       <button id="home" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Home</button>
+      <button id="Passcode" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/Finding-Passcode'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Finding Passcode</button>
       <button id="disciples" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/12-Disciples'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">12 Disciples</button>
       <button id="input" class="text-btn" onclick="window.location.href='https://andy-0905.github.io/Escape-Room-Password-Validation/input'" onmousemove="oncolor(id)" onmouseout="offcolour(id)">Input</button>
     </div>
   </header>
   <audio id="bg-music" loop>
-    <source src="bgm.mp3" type="audio/mpeg">
-  </audio>
-  <audio id="ticking-sound">
-    <source src="ticking.mp3" type="audio/mpeg">
+    <source src="bgm-passcode.mp3" type="audio/mpeg">
   </audio>
   <div id="timer-container">
     <div id="timer"></div>
     <div id="penalty"></div>
   </div>
   <div class="container">
-    <h2>12 Disciples</h2>
+    <h2>Finding Passcode</h2>
     <div id="message"></div>
-    <h1>Welcome to the Escape Room</h1>
+    <h1>Welcome to the Game</h1>
     <div id="q1-section" class="section-box" style="display:block;">
-      <h2>Section 1</h2>
-      <h3>Let's start with the envelops on the table</h3>
+      <h4>Passcode</h4>
+      <h3>Search through the area and find this 5-digit passcode</h3>
       <input type="text" id="q1">
       <button onclick="checkAnswer(1, this)">Submit</button>
-    </div>
-
-    <div id="q2-section" class="section-box" style="display:none;">
-      <h2>Section 2</h2>
-      <h3>Find the jewelry box</h3>
-      <h3>Hint: a word but more than one</h3>
-      <input type="text" id="q2">
-      <button onclick="checkAnswer(2, this)">Submit</button>
-    </div>
-
-    <div id="q3-section" class="section-box" style="display:none;">
-        <h2>Section 3</h2>
-        <h3>Animals</h3>
-        <h3>Hint: Find the passage, _ _ _</h3>
-        <input type="text" id="q3">
-        <button onclick="checkAnswer(3, this)">Submit</button>
-    </div>
-
-    <div id="q4-section" class="section-box" style="display:none;">
-      <h2>Section 4</h2>
-      <h3>The Power of Together</h3>
-      <h3>Hint: Find your lovable, honey-loving friendwith a big round tummy</h3>
-      <input type="text" id="q4">
-      <button onclick="checkAnswer(4, this)">Submit</button>
-    </div>
-
-    <div id="q5-section" class="section-box" style="display:none;">
-      <h2>Section 5</h2>
-      <h3>Jesus washes the disciples' feet</h3>
-      <h3>Hint: Find the bottle</h3>
-      <input type="text" id="q5">
-      <button onclick="checkAnswer(5, this)">Submit</button>
-    </div>
-
-    <div id="q6-section" class="section-box" style="display:none;">
-      <h2>Section 6</h2>
-      <h3>The Missing One</h3>
-      <h3>Hint: Find the letter under the table</h3>
-      <input type="text" id="q6">
-      <button onclick="checkAnswer(6, this)">Submit</button>
     </div>
 
     <div id="end-section" class="section-box" style="display:none;">
@@ -345,7 +308,7 @@
     }
 
     function oncolor(id) {
-      document.getElementById(id).style="color:green;";
+      document.getElementById(id).style="color:white;";
     }
 
     function offcolour(id) {
@@ -422,26 +385,9 @@
     document.addEventListener("click", function initAudio() {
       startMusic();
       startTimer(3600); // 60 minutes (3600 seconds)
-      startIntervalAudio();
 
       document.removeEventListener("click", initAudio);
     });
-
-    function startIntervalAudio() {
-      playIntervalSound();
-
-      setInterval(() => {
-        playIntervalSound();
-      }, 180000);
-    }
-
-    function playIntervalSound() {
-      const sound = document.getElementById("ticking-sound");
-      sound.volume = 0.5;
-      sound.play()
-        .then(() => console.log("sound played"))
-        .catch(err => console.log("play failed:", err));
-      }
     </script>
   </div>
 </body>
